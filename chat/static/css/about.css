@@ -1,0 +1,17 @@
+body {
+  background: url(/static/image.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.bottom_class {
+	margin-left: 20px;
+    position:absolute;
+    bottom:0;
+    font-family: 'Shift', sans-serif;
+}
