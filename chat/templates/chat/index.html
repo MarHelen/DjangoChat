@@ -85,6 +85,17 @@ $(function() {
             }
         });
     };
+
+  
+       setInterval(function(){my_function() }, 2000); 
+     
+    function my_function(){
+      $.getJSON('/content',
+        function(data){
+      $('#refresh li:last').after(<li class="list-group-item">data.answ<li>)
+    });
+    };
+
 });
 </script>
 
