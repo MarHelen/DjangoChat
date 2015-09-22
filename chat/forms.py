@@ -11,6 +11,6 @@ class PostForm(forms.ModelForm):
         #message_text = forms.CharField(widget=forms.Textarea)
         widgets = {
             'message_text': forms.TextInput(
-                attrs={'id': 'message_text', 'required': True, 'placeholder': 'new message...',}
+                attrs={'id': 'message_text', 'required': True, 'placeholder': 'new message...', 'max_length':100}
             ),
         }

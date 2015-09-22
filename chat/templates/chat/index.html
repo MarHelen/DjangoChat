@@ -32,9 +32,9 @@
 
 <div class="panel-footer">
 <div class="row white">
-    <table class="table">
+    <table class="MyTable">
     <tbody>
-    <tr>
+    <tr class="tr_class">
     <div class="columns large-12">
         <form method="POST" id="post-form">
 
@@ -87,20 +87,20 @@ $(function() {
     };
 
   
-       setInterval(function(){my_function() }, 2000); 
+    setInterval(function(){my_function() }, 5000); 
      
     function my_function(){
-      $.getJSON('/content',
+      $.getJSON('/content/',
         function(data){
-      $('#refresh li:last').after(<li class="list-group-item">data.answ<li>)
+        	if (data.status == 'update succeeded'){
+        	    for (item in data.answer) {
+                    $('#refresh').append('<tr><td>'+item+'</td></tr>') 
+            }}
     });
     };
 
 });
 </script>
-
-
-
 
 
 
