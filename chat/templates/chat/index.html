@@ -18,30 +18,26 @@
   <!-- Default panel contents -->
   <div class="panel-heading"><h2>Chat Box</h2></div>
   <!-- List group -->
+  <div class='panel-body'>
   <table  id="refresh" class="table">
   <tbody>
-  {% if unicode_list %}
-    {% for item in unicode_list %}  
-    <tr><td class="list-group-item"> {{item}} </td></tr>
-    {% endfor %}
-  {% else %}
-    <tr><td class="list-group-item"> No message to display...</td></tr>
-  {% endif %}
+      <tr><td></td></tr>
   </tbody>
   </table>
+  </div>
 
 <div class="panel-footer">
 <div class="row white">
     <table class="MyTable">
     <tbody>
     <tr class="tr_class">
-    <div class="columns large-12">
-        <form method="POST" id="post-form">
+    <div class="columns large-6">
+        <form method="POST" id="post-form" action="/chat/new_message/">
 
-            <td><div class="fieldWrapper" id="the_post" class="form-control" type="text">
+            <td class="col-lg-6"><div class="fieldWrapper" id="the_post" class="form-control" type="text">
                 {{ form.message_text }}
             </div></td>
-            <td> <input type="submit" value="Post" class="btn btn-success"></td>
+            <td class="col-lg-6"> <input type="submit" value="Post" class="btn btn-success"></td>
         </form>
     </div>
     </tr>
@@ -68,14 +64,17 @@ $(function() {
     function create_post() {
         console.log("create post is working!") // sanity check
         $.ajax({
-            url : "new_message/", // the endpoint
+            url : "/chat/new_message/", // the endpoint
             type : "POST", // http method
-            data : { the_post : $('#post-form').val() }, // data sent with the post request
+            data : { the_post : $('#message_text').val() }, // data sent with the post request
             // handle a successful response
             success : function(json) {
-                $('#post-text').val(''); // remove the value from the input
+            	console.log($('#message_text').val());
+            	alert('Your message has been sent successfuly')
+                $('#message_text').val(''); // remove the value from the input
                 console.log(json); // log the returned json to the console
                 console.log("success"); // another sanity check
+                console.log({{form.message_text.errors}})
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
@@ -87,7 +86,7 @@ $(function() {
     };
 
   
-    setInterval(function(){my_function() }, 5000); 
+    setInterval(function(){my_function() }, 100000); 
      
     function my_function(){
       $.getJSON('/content/',
@@ -101,6 +100,10 @@ $(function() {
 
 });
 </script>
+
+ $("#my-modal .modal-body").load(target, function() {
+         $("#my-modal").modal("show");
+    });
 
 
 
