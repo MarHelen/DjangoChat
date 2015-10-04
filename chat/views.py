@@ -19,6 +19,7 @@ from datetime import datetime
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 #@csrf_token
 def index(request):
@@ -34,10 +35,11 @@ def index(request):
         form = PostForm(request.POST)
         if form.is_valid():
             message_t = form.cleaned_data['message_text']        
-            new_mess = Message(message_text = message_t, post_time = new_mess.created, username="first")
+            time = timezone.now()
+            new_mess = Message(message_text = message_t, post_time = time, username="first")
             #logging for new came message
             message_for_log = 'first just wrote: %s' %(message_t)
-            logger.log(message_for_log)       
+            logger.debug(message_for_log)       
             new_mess.save()
             #post = Post(text=post_text, author=request.user)
             response_data['result'] = 'Create post successful!'

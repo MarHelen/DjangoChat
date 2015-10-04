@@ -66,15 +66,15 @@ $(function() {
         $.ajax({
             url : "/chat/new_message/", // the endpoint
             type : "POST", // http method
-            data : { the_post : $('#message_text').val() }, // data sent with the post request
+            dataType: "json",
+            data : { message_text : $('#message_text').val() }, // data sent with the post request
             // handle a successful response
-            success : function(json) {
+            success : function(data) {
             	console.log($('#message_text').val());
             	alert('Your message has been sent successfuly')
                 $('#message_text').val(''); // remove the value from the input
-                console.log(json); // log the returned json to the console
-                console.log("success"); // another sanity check
-                console.log({{form.message_text.errors}})
+                $('#myTable').append('<tr><td> '+'your message has been sent'+' </td></tr>')
+                console.log(data['result']); // log the returned json to the console
             },
             // handle a non-successful response
             error : function(xhr,errmsg,err) {
@@ -91,7 +91,7 @@ $(function() {
     function my_function(){
       $.getJSON('/content/',
         function(data){
-        	if (data.status == 'update succeeded'){
+        	if (data['status'] == 'update succeeded'){
         	    for (item in data.answer) {
                     $('#refresh').append('<tr><td>'+item+'</td></tr>') 
             }}
