@@ -21,6 +21,6 @@ from django.conf import settings
 urlpatterns = [
     url(r'^chat/', include('chat.urls')),
     url(r'^chat/new_message/', include('chat.urls')),
-    url(r'^chat/content/', include('chat.urls')),
+    url(r'^content/', include('chat.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

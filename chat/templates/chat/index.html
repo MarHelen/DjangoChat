@@ -41,6 +41,9 @@
         </form>
     </div>
     </tr>
+    <tr>
+    	<td id="form_message"></td>
+    </tr>
     </tbody>
     </table>
 </div>
@@ -73,7 +76,7 @@ $(function() {
             	console.log($('#message_text').val());
             	alert('Your message has been sent successfuly')
                 $('#message_text').val(''); // remove the value from the input
-                $('#myTable').append('<tr><td> '+'your message has been sent'+' </td></tr>')
+                $('#form_message').append('  your message has been sent')
                 console.log(data['result']); // log the returned json to the console
             },
             // handle a non-successful response
@@ -84,26 +87,32 @@ $(function() {
             }
         });
     };
+});
+</script>
 
-  
-    setInterval(function(){my_function() }, 100000); 
+<script>
+
+ $(function() { 
+    setInterval(function(){my_function() }, 10000); 
      
     function my_function(){
+    	console.log("Congrats!I'm in my_function!");
       $.getJSON('/content/',
         function(data){
-        	if (data['status'] == 'update succeeded'){
-        	    for (item in data.answer) {
-                    $('#refresh').append('<tr><td>'+item+'</td></tr>') 
-            }}
+            var getContent = JSON.parse(data);
+            console.log("Congrats!I'm in get function!");
+        	console.log(data.status);
+        	if (data.status == 'update succeeded'){
+        		$.each( data.answer, function(i,item){
+                    $('#refresh tr:last').after('<tr><td>'+ item +'</td></tr>') 
+            });
+            };
     });
     };
 
 });
 </script>
 
- $("#my-modal .modal-body").load(target, function() {
-         $("#my-modal").modal("show");
-    });
 
 
 
