@@ -17,10 +17,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
+from chat.views import * 
 
-urlpatterns = [
+urlpatterns = [ 
     url(r'^chat/', include('chat.urls')),
     url(r'^chat/new_message/', include('chat.urls')),
-    url(r'^content/', include('chat.urls')),
+    url(r'^content/', 'chat.views.content' ),
     url(r'^admin/', include(admin.site.urls)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

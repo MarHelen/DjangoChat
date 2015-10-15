@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     <style type="text/css">
-        .panel panel-default {
-            height:600px;
+        .panel-body {
+            height:300px;
             overflow-y:scroll;
             padding-bottom: 50px;
             }
@@ -18,7 +18,7 @@
   <!-- Default panel contents -->
   <div class="panel-heading"><h2>Chat Box</h2></div>
   <!-- List group -->
-  <div class='panel-body'>
+  <div class='panel-body' >
   <table  id="refresh" class="table">
   <tbody>
       <tr><td></td></tr>
@@ -76,7 +76,7 @@ $(function() {
             	console.log($('#message_text').val());
             	alert('Your message has been sent successfuly')
                 $('#message_text').val(''); // remove the value from the input
-                $('#form_message').append('  your message has been sent')
+                //$('#form_message').append('  your message has been sent')
                 console.log(data['result']); // log the returned json to the console
             },
             // handle a non-successful response
@@ -98,19 +98,19 @@ $(function() {
     function my_function(){
     	console.log("Congrats!I'm in my_function!");
       $.getJSON('/content/',
-        function(data){
-            var getContent = JSON.parse(data);
+        function(data, status){
+            //var getContent = JSON.parse(data);
             console.log("Congrats!I'm in get function!");
-        	console.log(data.status);
-        	if (data.status == 'update succeeded'){
-        		$.each( data.answer, function(i,item){
+        	console.log(status);
+        	if (status == 'success'){
+        		$.each( data['answer'], function(i,item){
                     $('#refresh tr:last').after('<tr><td>'+ item +'</td></tr>') 
             });
             };
     });
-    };
+  };
+    });
 
-});
 </script>
 
 

@@ -14,6 +14,6 @@ class Message(models.Model):
     
     def __unicode__(self):       
         return '%s %s wrote: %s' %(self.post_time.strftime("%Y-%m-%d %H:%M:%S"), self.username, self.message_text)
-    def was_published_recently(self):
+    def was_published_recently(self, specified_time):
         return self.post_time >= timezone.now() - datetime.timedelta(days=1)    
 

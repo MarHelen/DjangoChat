@@ -15,7 +15,7 @@ from django.utils import timezone
 import logging
 import json
 from datetime import datetime
-
+import datetime
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -93,22 +93,31 @@ def new_message(request):
 def content(request):
     response_data= {}
     if request.method == "GET":
-        last_update = request.session.get('update_time', False)
-        latest_message_list = Message.objects.filter(post_time.strftime("%M%S") > last_update).order_by('post_time')
-        request.session['update_time'] = timezone.now().strftime("%M%S")
+        #last_update = request.session.get('update_time', False)
+       # current_time
+        #last_update= timezone.now() - datetime.timedelta(days=1) 
+        #latest_message_list = Message.objects.filter(post_time > last_update   ).order_by('post_time')
+        latest_message_list = Message.objects.order_by('post_time')
+        #request.session['update_time'] = timezone.now().strftime("%M%S")
         #latest_message_list = [item for item in latest_message_list if item.post_time > last_update]
         if latest_message_list:
-            unicode_list = [item.__unicode__ for item in latest_message_list]
-            response_data['status'] = 'update succeeded'
+            unicode_list = [item.__unicode__() for item in latest_message_list]
+            response_data['status'] = 'success'
         else: 
-            response_data['status'] = 'nothing to update'
+            response_data['status'] = 'notmodified'
             unicode_list = []
         response_data['answer'] = unicode_list
     else:
-        response_data['status'] = 'Something wrong with request'
+        response_data['status'] = 'error'
+    
+    context = RequestContext(request, {
+            'unicode_list': unicode_list, 
+            'status' : response_data['status'],
+             })     
          
         
     return HttpResponse(
+            #context,
             json.dumps(response_data),
             content_type="application/json"
         )        
