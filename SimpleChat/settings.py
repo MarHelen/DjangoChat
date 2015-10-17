@@ -94,6 +94,8 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
+LOGGING_CONFIG = None
+
 TIME_ZONE = 'EET'
 
 USE_I18N = True
@@ -112,3 +114,22 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, '/chat/static/'),
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:\SimpleChat\debug.log',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
