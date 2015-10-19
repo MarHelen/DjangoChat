@@ -27,16 +27,10 @@ import time
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-#logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
-#@csrf_token
 def index(request):
-    #latest_message_list = Message.objects.order_by('post_time')
-    #unicode_list = [item.__unicode__ for item in latest_message_list]
-    """ hack for storing datetime value in serializable value - convert to string time part as %M%S
-                that's enough for time comparation in scale of seconds """    
-    #request.session['update_time'] = timezone.now().strftime("%M%S")
-    #form = PostForm(request.POST)
+    """function designed for handling POST message requst, verifies, saves to db"""
     response_data = {}
     response_data['error'] = ''
     if request.method == 'POST':
@@ -99,41 +93,40 @@ def new_message(request):
 #"""
 
 def content(request):
+    """ this function handles continues GET requsts for updating Chat box with new messages"""
     response_data= {}
     if request.method == "GET":
-        last_update_id = request.session.get('updated_id', False)
-        #int(dt.strftime("%s"))
-        #current_time = timezone.localtime(timezone.now())
-        #last_update= timezone.now() - datetime.timedelta(days=1) 
+        last_update_id = int(request.GET.get('message_id', 0))
+        
+        #request list of all messages in the db
         latest_message_list = Message.objects.order_by('id')
-        #time.mktime(d.timetuple())
+        
+        #filter messages list by model function to leave only newer than specified id
         latest_message_list = [item for item in latest_message_list if item.was_published_recently(last_update_id)]
-        #latest_message_list = Message.objects.order_by('post_time')
-        #request.session['update_time'] = timezone.now().strftime("%M%S")
-        #latest_message_list = [item for item in latest_message_list if item.post_time > last_update]
-        #logging for new came message
-        message_for_log = 'The last outputted message has %s post_time' %(request.session.get('updated_id'))
-        logger.debug(message_for_log)           
+        
+        #logging for new-coming message
+        message_for_log = 'The last outputted in GUI message has %s id' %(last_update_id)
+        logger.debug(message_for_log)
+        
+        """" if latest_message_list is not empty, make unicode message list, save last message id, set status,
+             if it's empty - last_message_id leavs the same, set status, make unicode list empty"""
         if latest_message_list:
-            request.session['updated_id'] = latest_message_list[-1].id
+            response_data['id'] = latest_message_list[-1].id
             unicode_list = [item.__unicode__() for item in latest_message_list]
             response_data['status'] = 'success'
         else: 
+            response_data['id'] = last_update_id
             response_data['status'] = 'notmodified'
             unicode_list = []
-        #last_update = time.mktime(current_time.timetuple())
+            
+        #make response data list
         response_data['answer'] = unicode_list
+        
+        #if request is not GET, status will be 'error'
     else:
         response_data['status'] = 'error'
     
-    context = RequestContext(request, {
-            'unicode_list': unicode_list, 
-            'status' : response_data['status'],
-             })     
-         
-        
     return HttpResponse(
-            #context,
             json.dumps(response_data),
             content_type="application/json"
         )        
